@@ -102,6 +102,11 @@ See <https://github.com/chandler37/immaculater-cli>.
 - `docker build -t immaculater-cli .`
 - `docker run -it immaculater-cli python2 todo-runner.py --help`
 
+## Future Directions
+
+- Expanding the setup.py magic into a proper PyPI package listed publicly
+- Python3 support, perhaps easier if we move from python-gflags to abseil-py
+
 ## Copyright
 
 Copyright 2017 David L. Chandler
