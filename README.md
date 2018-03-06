@@ -95,7 +95,7 @@ E-mail immaculaterhelp@gmail.com if you have any problems.
 
 ## Source Code
 
-See <https://github.com/chandler37/immaculater/blob/master/cli/>.
+See <https://github.com/chandler37/immaculater-cli>.
 
 ## Docker
 
