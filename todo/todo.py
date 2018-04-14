@@ -58,14 +58,19 @@ Though you might prefer the following (see `help do`):
 For help on Immaculater commands, run `$0 help` or `$0 help mkact` etc.
 """
 
+from __future__ import absolute_import
+from __future__ import unicode_literals
+from __future__ import print_function
+
 __version__ = "0.1.4"
 
 # TODO(chandler): Support && like the Django CLI does
 
 import getpass
-import os
 import pipes
 import shlex
+import six
+from six.moves import input
 import sys
 
 import requests
@@ -74,7 +79,7 @@ import gflags as flags  # https://github.com/google/python-gflags
 
 flags.DEFINE_string('encoding',
                     'utf-8',
-                    'Output Unicode encoding')
+                    'Output Unicode encoding for python 2.7. In python 3 set the environment variable PYTHONIOENCODING instead.')
 flags.DEFINE_string('url',
                     'http://127.0.0.1:5000/todo/api',
                     'URL to POST to',
@@ -144,7 +149,7 @@ def _get_username_and_password():
 
 
 def _print(s):
-  print(s.encode(FLAGS.encoding))
+  print(s.encode(FLAGS.encoding) if six.PY2 else s)
 
 
 def _handle_commands(commands,
@@ -174,7 +179,7 @@ def _handle_commands(commands,
       if isinstance(j, dict) and 'immaculater_error' in j:
         _print(j['immaculater_error'])
       else:
-        _print(unicode(r.json()))
+        _print(six.text_type(r.json()))
     except ValueError:
       _print('ERROR: Status code %s' % r.status_code)
       _print(r.text)
@@ -201,7 +206,7 @@ def _repl(username=None, password=None):
 
   while True:
     try:
-      command = raw_input("!read-only sandbox!> " if FLAGS.ro else "> ")
+      command = input("!read-only sandbox!> " if FLAGS.ro else "> ")
     except EOFError:
       sys.exit(0)
     if command.lower() in ('exit', 'quit', 'bye', '\q'):
